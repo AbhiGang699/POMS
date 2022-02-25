@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:966848676209:android:a114ff784bbd657ed436d0",
+        "mobilesdk_app_id": "1:966848676209:android:916dbd2c7134f197d436d0",
         "android_client_info": {
-          "package_name": "com.productownership"
+          "package_name": "com.example.pomsp"
         }
       },
       "oauth_client": [
