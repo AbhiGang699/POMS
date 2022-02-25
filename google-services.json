@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "966848676209",
+    "project_id": "poms-3405f",
+    "storage_bucket": "poms-3405f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966848676209:android:a114ff784bbd657ed436d0",
+        "android_client_info": {
+          "package_name": "com.productownership"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966848676209-j86u4m4lj9imi4ou92vb8jfs53j07b9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTQpqZqlXaGnnJNs538AUThTPcKp6H2oM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966848676209-j86u4m4lj9imi4ou92vb8jfs53j07b9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
