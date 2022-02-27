@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poms/helper/auth.dart';
+import 'package:poms/injection.dart';
 import 'package:poms/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -93,13 +94,11 @@ class SignInScreen extends StatelessWidget {
               padding: const EdgeInsets.all(32.0),
               child: InkWell(
                 onTap: () async {
-                  final Authentication _authhelper = Authentication();
-                  try {
-                    await _authhelper.signIn(
-                        emailController.text, passwordController.text);
-                  } catch (e) {
-                    print(e);
-                  }
+                  getIt<Authentication>().add(SignInUser(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      context: context)
+                  );
                 },
                 child: Container(
                   height: 50,

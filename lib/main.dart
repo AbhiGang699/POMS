@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poms/injection.dart';
 import 'package:poms/screens/redirect_screen.dart';
 import 'route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  configureInjection();
   runApp(const MyApp());
 }
 
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: RedirectScreen(),
+      home: const RedirectScreen(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

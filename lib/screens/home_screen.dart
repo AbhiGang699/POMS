@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     _uid = FirebaseAuth.instance.currentUser!.uid;
     List<Widget> _body = [
-      Center(
+      const Center(
         child: ShoppingScreen(),
       ),
       Center(
