@@ -1,4 +1,4 @@
-name: pomsp
+name: poms
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -34,6 +34,12 @@ dependencies:
   flutter_bloc: ^8.0.1
   firebase_auth: ^3.3.9
   firebase_core: ^1.13.1
+  cloud_firestore: ^3.1.10
+  web3dart: ^2.3.5
+  bip39: ^1.0.6
+  ed25519_hd_key: ^2.2.0
+  hex: ^0.2.0
+  animated_splash_screen: ^1.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:poms/screens/redirect_screen.dart';
 import 'route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -16,14 +17,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'POMS',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/sign_in',
-      onGenerateRoute: RouteGenerator.generateRoute ,
-      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: RedirectScreen(),
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
-

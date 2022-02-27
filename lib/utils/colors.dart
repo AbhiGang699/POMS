@@ -20,4 +20,5 @@ class UIColors {
   static const Color blue = Color(0xFF72DEFF);
   static const Color red = Color(0xFFDC3545);
   static const Color pink = Color(0xFFf54291);
+  static const Color black = Colors.black45;
 }
