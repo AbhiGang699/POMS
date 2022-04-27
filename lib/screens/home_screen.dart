@@ -27,6 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ];
     return Scaffold(
+      appBar: AppBar(title: const Text('POMS'), actions: [
+        IconButton(
+            onPressed: (() {
+              FirebaseAuth.instance.signOut();
+            }),
+            icon: const Icon(Icons.exit_to_app))
+      ]),
       body: _body[_index],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,

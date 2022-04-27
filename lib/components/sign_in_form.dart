@@ -1,13 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:poms/helper/auth.dart';
+import 'package:poms/helper/auth/auth.dart';
 import 'package:poms/injection.dart';
 import 'package:poms/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
@@ -97,8 +103,7 @@ class SignInScreen extends StatelessWidget {
                   getIt<Authentication>().add(SignInUser(
                       email: emailController.text,
                       password: passwordController.text,
-                      context: context)
-                  );
+                      context: context));
                 },
                 child: Container(
                   height: 50,

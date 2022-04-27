@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:bloc/bloc.dart';
 
@@ -13,8 +13,7 @@ class Authentication extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Authentication(AuthState initialState) : super(initialState) {
-
-    on<SignInUser>( (event, emit) async {
+    on<SignInUser>((event, emit) async {
       emit(AuthLoading());
       try {
         final UserCredential userCredential =
@@ -34,37 +33,37 @@ class Authentication extends Bloc<AuthEvent, AuthState> {
       }
     });
 
-    on<SignUpUser>( (event, emit) async {
+    on<SignUpUser>((event, emit) async {
       log("entered event handler");
       emit(AuthLoading());
       try {
         log("fetching credentials");
-        final UserCredential authResult = await auth
-            .createUserWithEmailAndPassword(email: event.email, password: event.password);
+        final UserCredential authResult =
+            await auth.createUserWithEmailAndPassword(
+                email: event.email, password: event.password);
         log("user created");
         final User? user = authResult.user;
         assert(user != null);
         assert(await user?.getIdToken() != null);
         log("all tests passed");
         emit(AuthSuccess());
-      }on FirebaseAuthException catch (e) {
+      } on FirebaseAuthException catch (e) {
         emit(AuthError(message: 'Credentials Invalid'));
         if (e.code == 'email-already-in-use') {
           MotionToast.error(
-              title:  const Text('Error'),
-              description:  const Text('Email is already in use')
-          ).show(event.context);
+                  title: const Text('Error'),
+                  description: const Text('Email is already in use'))
+              .show(event.context);
         } else if (e.code == 'weak-password') {
           MotionToast.error(
-              title:  const Text('Error'),
-              description:  const Text('Password is too weak')
-          ).show(event.context);
+                  title: const Text('Error'),
+                  description: const Text('Password is too weak'))
+              .show(event.context);
         }
-      }catch (e) {
+      } catch (e) {
         emit(AuthError(message: 'Cant sign up'));
       }
     });
-
   }
 
   // Stream<AuthState> mapEventToState(AuthEvent event) async* {
