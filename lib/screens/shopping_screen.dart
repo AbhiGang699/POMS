@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:poms/components/product_tile.dart';
 
 class ShoppingScreen extends StatefulWidget {
-  const ShoppingScreen({Key? key}) : super(key: key);
+  final bool owned;
+  const ShoppingScreen({Key? key, required this.owned}) : super(key: key);
 
   @override
   State<ShoppingScreen> createState() => _ShoppingScreenState();
@@ -19,10 +20,18 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
     String _user = FirebaseAuth.instance.currentUser!.uid;
 
     try {
-      QuerySnapshot query = await FirebaseFirestore.instance
-          .collection('products')
-          .where('owner', isNotEqualTo: _user)
-          .get();
+      QuerySnapshot query;
+      if (widget.owned) {
+        query = await FirebaseFirestore.instance
+            .collection('products')
+            .where('owner', isEqualTo: _user)
+            .get();
+      } else {
+        query = await FirebaseFirestore.instance
+            .collection('products')
+            .where('owner', isNotEqualTo: _user)
+            .get();
+      }
 
       for (var element in query.docs) {
         debugPrint(element['name']);
@@ -32,7 +41,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('sorry couldn\'t fetch data'),
       ));
-      print(error.toString());
+      debugPrint(error.toString());
       _result.clear();
     }
 
@@ -61,12 +70,15 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
               onRefresh: refreshProducts,
               child: snapshot.data!.isNotEmpty
                   ? ListView.builder(
+                      shrinkWrap: true,
                       itemBuilder: ((context, index) {
                         return ProductCard(
-                            id: snapshot.data![index].id,
-                            name: snapshot.data![index]['name'],
-                            description: snapshot.data![index]['description'],
-                            ownerName: snapshot.data![index]['ownerName']);
+                          id: snapshot.data![index].id,
+                          name: snapshot.data![index]['name'],
+                          description: snapshot.data![index]['description'],
+                          ownerName: snapshot.data![index]['ownerName'],
+                          isOwner: widget.owned,
+                        );
                       }),
                       itemCount: snapshot.data!.length,
                     )

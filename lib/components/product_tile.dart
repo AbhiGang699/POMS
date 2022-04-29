@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
   final String name, description, ownerName, id;
+  final bool isOwner;
 
   const ProductCard(
       {Key? key,
       required this.id,
       required this.name,
       required this.description,
-      required this.ownerName})
+      required this.ownerName,
+      required this.isOwner})
       : super(key: key);
 
   @override
@@ -22,10 +24,46 @@ class ProductCard extends StatelessWidget {
               content: Text(id),
             ));
           },
-          child: ListTile(
-            title: Text(name),
-            subtitle: Text(description),
-            trailing: Text(ownerName),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: Text(name),
+                subtitle: Text(description),
+                trailing: Text(ownerName),
+              ),
+              isOwner
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        TextButton(
+                          child: const Text('Initiate Shipping'),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Initiate'),
+                            ));
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        TextButton(
+                          child: const Text('Request Product'),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Request'),
+                            ));
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    )
+            ],
           ),
         ),
       ),
