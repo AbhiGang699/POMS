@@ -6,25 +6,25 @@ import 'package:ed25519_hd_key/ed25519_hd_key.dart';
 import 'package:hex/hex.dart';
 import 'package:http/http.dart';
 
-class Wallet {
+class WalletService {
   Web3Client getNetworkProvider() {
     return Web3Client(apiUrl, Client());
   }
 
-  String generateMnemonic() {
+  static String generateMnemonic() {
     return bip39.generateMnemonic();
   }
 
-  Future<String> getPrivateKey(String mnemonic) async {
+  static Future<String> getPrivateKey(String mnemonic) async {
     final seed = bip39.mnemonicToSeed(mnemonic);
     final master = await ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     final privateKey = HEX.encode(master.key);
     return privateKey;
   }
 
-  Future<EthereumAddress> getPublicKey(String privateKey) async {
+  static Future<EthereumAddress> getPublicKey(String privateKey) async {
     final private = EthPrivateKey.fromHex(privateKey);
-    final address = await private.extractAddress();
+    final address = private.address;
     return address;
   }
 
@@ -36,12 +36,12 @@ class Wallet {
 
   static Future<List> callFunction(
       {required String functionName, required List param}) async {
-    final DeployedContract contract = await Wallet.contract;
+    final DeployedContract contract = await WalletService.contract;
 
     final function = contract.function(functionName);
 
     try {
-      final List returnList = await Wallet()
+      final List returnList = await WalletService()
           .getNetworkProvider()
           .call(contract: contract, function: function, params: param);
       return returnList;
@@ -57,13 +57,13 @@ class Wallet {
         await ContractParser.fromAssets(contractAddress);
     final Credentials credentials =
         // ignore: deprecated_member_use
-        await Wallet()
+        await WalletService()
             .getNetworkProvider()
             .credentialsFromPrivateKey(relayWallet);
 
     final function = deployedContract.function(functionName);
     try {
-      await Wallet()
+      await WalletService()
           .getNetworkProvider()
           .sendTransaction(
               credentials,

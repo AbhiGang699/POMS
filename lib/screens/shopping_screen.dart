@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:poms/components/product_tile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../helper/wallet_service.dart';
 
 class ShoppingScreen extends StatefulWidget {
   final bool owned;
@@ -15,26 +20,30 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
   late Future<List<QueryDocumentSnapshot>> _products;
 
   Future<List<QueryDocumentSnapshot>> getProducts() async {
-    print('in getproducts');
     List<QueryDocumentSnapshot> _result = [];
     String _user = FirebaseAuth.instance.currentUser!.uid;
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String mnemonic = _prefs.getString('Mnemonic')!;
+    final priKey = await WalletService.getPrivateKey(mnemonic);
+    final pubKey = await WalletService.getPublicKey(priKey);
+    final pub = pubKey.toString();
 
     try {
       QuerySnapshot query;
       if (widget.owned) {
         query = await FirebaseFirestore.instance
             .collection('products')
-            .where('owner', isEqualTo: _user)
+            .where('owner', isEqualTo: pub)
             .get();
       } else {
         query = await FirebaseFirestore.instance
             .collection('products')
-            .where('owner', isNotEqualTo: _user)
+            .where('owner', isNotEqualTo: pub)
             .get();
       }
 
       for (var element in query.docs) {
-        debugPrint(element['name']);
+        debugPrint(element['owner']);
         _result.add(element);
       }
     } catch (error) {
@@ -77,6 +86,8 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                           name: snapshot.data![index]['name'],
                           description: snapshot.data![index]['description'],
                           ownerName: snapshot.data![index]['ownerName'],
+                          price: snapshot.data![index]['price'],
+                          status: snapshot.data![index]['status'],
                           isOwner: widget.owned,
                         );
                       }),
